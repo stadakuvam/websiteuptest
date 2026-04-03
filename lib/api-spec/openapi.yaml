@@ -1,0 +1,161 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: WebsiteUpTest API specification
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: checks
+    description: Website availability checks
+  - name: recent
+    description: Recently checked websites
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      description: Returns server health status
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /check:
+    post:
+      operationId: checkWebsite
+      tags: [checks]
+      summary: Check website availability
+      description: Tests a website or IP address from 5 independent locations
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CheckRequest"
+      responses:
+        "200":
+          description: Check results from all locations
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CheckResponse"
+        "400":
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /recent:
+    get:
+      operationId: getRecentChecks
+      tags: [recent]
+      summary: Get recently checked websites
+      description: Returns the 25 most recently checked websites
+      responses:
+        "200":
+          description: List of recent checks
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecentChecksResponse"
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+    CheckRequest:
+      type: object
+      properties:
+        target:
+          type: string
+          description: Website URL or IP address to check
+      required:
+        - target
+    LocationResult:
+      type: object
+      properties:
+        location:
+          type: string
+          description: Location name (e.g., "New York, US")
+        status:
+          type: string
+          enum: [up, down, timeout]
+        responseTime:
+          type: number
+          description: Response time in milliseconds
+        statusCode:
+          type: integer
+          nullable: true
+          description: HTTP status code if available
+      required:
+        - location
+        - status
+        - responseTime
+    CheckResponse:
+      type: object
+      properties:
+        target:
+          type: string
+        isUp:
+          type: boolean
+        checkedAt:
+          type: string
+          description: ISO timestamp
+        locations:
+          type: array
+          items:
+            $ref: "#/components/schemas/LocationResult"
+        avgResponseTime:
+          type: number
+          nullable: true
+      required:
+        - target
+        - isUp
+        - checkedAt
+        - locations
+    RecentCheck:
+      type: object
+      properties:
+        id:
+          type: integer
+        target:
+          type: string
+        isUp:
+          type: boolean
+        checkedAt:
+          type: string
+        avgResponseTime:
+          type: number
+          nullable: true
+      required:
+        - id
+        - target
+        - isUp
+        - checkedAt
+    RecentChecksResponse:
+      type: object
+      properties:
+        checks:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecentCheck"
+      required:
+        - checks
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error

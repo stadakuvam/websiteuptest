@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "mO4AdU9Vc6i7K_IheX06T"
+uri = "file://artifacts/websiteuptest/public/websiteuptest.tar.gz"
+type = "unspecified"
+title = "WebsiteUpTest Source Code (tar.gz)"
