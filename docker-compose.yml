@@ -20,7 +20,7 @@ services:
       target: api
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgres://websiteuptest:websiteuptest@db:5432/websiteuptest
+      DATABASE_URL: postgres://websiteuptest:websiteuptest@q12qg764fvcmqbuknk1gslla:5432/websiteuptest
       PORT: "8080"
       NODE_ENV: production
     depends_on:
