@@ -10,7 +10,7 @@ COPY lib/api-client-react/package.json lib/api-client-react/
 COPY lib/db/package.json lib/db/
 COPY artifacts/api-server/package.json artifacts/api-server/
 COPY artifacts/websiteuptest/package.json artifacts/websiteuptest/
-RUN pnpm install --frozen-lockfile
+RUN pnpm install --no-frozen-lockfile
 
 FROM deps AS builder
 COPY . .
