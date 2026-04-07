@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:16-alpine
+    image: postgres:18-alpine
     restart: unless-stopped
     environment:
       POSTGRES_USER: websiteuptest
@@ -20,7 +20,7 @@ services:
       target: api
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgres://websiteuptest:websiteuptest@q12qg764fvcmqbuknk1gslla:5432/websiteuptest
+      DATABASE_URL: postgres://websiteuptest:websiteuptest@qub84pa93g5t087a7gw70njc:5432/websiteuptest
       PORT: "8080"
       NODE_ENV: production
     depends_on:
